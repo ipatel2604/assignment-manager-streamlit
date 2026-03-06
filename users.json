@@ -1,0 +1,18 @@
+[
+    {
+        "id": "1",
+        "email": "admin@school.edu",
+        "full_name": "System Admin",
+        "password": "123ssag@43AE",
+        "role": "Admin",
+        "registered_at": "2026-03-06T10:57:25.842149"
+    },
+    {
+        "id": "df889058-b5a0-4dc7-9692-b1dcc8f2b4cf",
+        "email": "ishanpatel2233@gmail.com",
+        "full_name": "sddfs",
+        "password": "eZia8@dhVxWNz44",
+        "role": "Instructor",
+        "registered_at": "2026-03-06 11:05:44.175811"
+    }
+]
