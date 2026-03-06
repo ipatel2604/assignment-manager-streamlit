@@ -41,7 +41,7 @@ assignment_type= st.radio("Type",["Homework","Lab"])
 
 #lab= st.checkbox("Lab")
 
-with st.expander("Assignment Preview",expander=True):
+with st.expander("Assignment Preview",expanded=True):
     st.markdown("## Live Preview")
     st.markdown(f"Title:{title}")
 
