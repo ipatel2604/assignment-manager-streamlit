@@ -17,7 +17,13 @@ inventory = [
 if "page" not in st.session_state:
     st.session_state["page"] = "home"
 
-
+if "message" not in st.session_state:
+    st.session_state["message"] = [
+        {
+            "role": "assistant",
+            "content": "Hi how can I help you today?"
+        }
+    ]
 with st.sidebar:
     if st.button("Home",key="home_btn",type="primary",use_container_width=True):
         st.session_state["page"]="home"
@@ -69,3 +75,83 @@ if st.session_state["page"]=="home":
 
 elif st.session_state["page"]== "orders":
     st.markdown("Under Construction...")
+
+tab1, tab2 = st.tabs(["Add New Order", "Cancel an order"])
+
+with tab1:
+    col1, col2 = st.columns([3,3])
+    with col1:
+        selected_item = st.selectbox("Items",options = inventory, key="inventory_selector",
+                                    format_func= lambda x: f"{x['name']}")
+        quantity = st.number_input("Enter the Quantity",min_value=1, step=1)
+
+        if st.button("Create New Order",key = "create_order_btn",type="primary",use_container_width=True):
+            with st.spinner("Recording the new order..."):
+                total = quantity* selected_item['price']
+
+                for item in inventory:
+                    if item["id"] == selected_item["id"]:
+                        item["stock"]= item["stock"]- quantity
+                        break
+            
+                orders.append({
+                "id": str(uuid.uuid4()),
+                "item_id": selected_item["id"],
+                "item_name": selected_item["name"],
+                "quantity": quantity,
+                "status": "placed",
+                "total_price": total,
+                
+            })
+                time.sleep(4)
+                with open(json_path_inventory,"w") as f:
+                    json.dump(inventory,f)
+
+                with open(json_path_orders,"w") as f:
+                    json.dump(orders,f)
+                
+                st.balloons()
+                time.sleep(8)
+
+                st.session_state["page"]="home"
+                st.rerun()
+            
+    with col2:
+        st.subheader("AI Assistant")
+        col11 ,col22 = st.columns([3,1])
+        with col11:
+            st.caption("Try asking : How to place an order")
+        
+        with col22:
+            if st.button("Clear Conversation"):
+                pass
+        
+        with st.container(border= True, height= 250):
+            for message in st.session_state["message"]:
+                with st.chat_message(message["role"]):
+                    st.write(message["content"])
+
+
+        user_input = st.chat_input("Ask a question...")
+        if user_input:
+            with st.spinner("Thinking..."):
+                st.session_state["message"].append({
+                    "role": "user",
+                    "content": user_input
+                })
+                
+                ai_response = "I am working on it ..."
+                    
+                st.session_state["message"].append({
+                            "role": "user",
+                            "content": user_input
+                        }
+                )
+                        
+                ai_response = "I am working on it ..."
+                    
+                st.session_state["message"].append(
+                    {
+                            "role": "user",
+                            "content": user_input
+                        })
